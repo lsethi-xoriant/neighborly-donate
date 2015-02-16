@@ -71,6 +71,10 @@ Neighborly::Application.routes.draw do
     end
   end
 
+  constraints NonValidSubdomainConstraint do
+    get '/', to: redirect('https://neighbor.ly')
+  end
+
   mount Neighborly::Admin::Engine => '/admin/', as: :neighborly_admin
 
   # Root path should be after channel constraints
