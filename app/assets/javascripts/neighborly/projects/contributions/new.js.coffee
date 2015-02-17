@@ -12,7 +12,7 @@ Neighborly.Projects.Contributions.New =
       # bind change event (support for ie8 )
       this.$('#contribution_form_value').change this.resetReward
       this.$('input[type=radio]').change this.clickReward
-      this.$('#contribution_anonymous').change this.clickAnonymous
+      this.$('#contribution_form_anonymous').change this.clickAnonymous
 
       this.$value = this.$('#contribution_form_value')
       this.rewards = this.$value.data('rewards')
@@ -57,5 +57,9 @@ Neighborly.Projects.Contributions.New =
       reward = this.reward()
       if reward
         value = this.$value.val()
-        this.selectReward(this.$('#contribution_reward_id')) if (!(/^(\d+)$/.test(value))) || (parseInt(value) < parseInt(reward.minimum_value))
+        
+        for r in this.rewards
+          newReward = r if parseInt(r.minimum_value) < parseInt(value)
+        
+        this.selectReward(this.$('#contribution_form_reward_id_'.concat(newReward.id))) if (!(/^(\d+)$/.test(value))) || (parseInt(reward.minimum_value) < parseInt(value))
       this.submitButtonHandler()
