@@ -71,8 +71,10 @@ Neighborly::Application.routes.draw do
     end
   end
 
-  constraints NonValidSubdomainConstraint do
-    get '/', to: redirect('https://neighbor.ly')
+  unless Rails.env.test?
+    constraints NonValidSubdomainConstraint do
+      get '/', to: redirect('https://neighbor.ly')
+    end
   end
 
   mount Neighborly::Admin::Engine => '/admin/', as: :neighborly_admin
