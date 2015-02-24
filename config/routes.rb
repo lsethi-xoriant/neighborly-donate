@@ -1,6 +1,14 @@
 require 'sidekiq/web'
 
 Neighborly::Application.routes.draw do
+
+  unless Rails.env.test?
+    constraints NonValidSubdomainConstraint do
+      get '/', to: redirect('https://neighbor.ly')
+      get '/*wildcard', to: redirect('https://neighbor.ly/%{wildcard}')
+    end
+  end
+
   get '/about', to: redirect('/learn')
 
   devise_for :users, path: '',
@@ -68,12 +76,6 @@ Neighborly::Application.routes.draw do
       resources :projects, only: [:new, :create]
       # NOTE We use index instead of create to subscribe comming back from auth via GET
       resource :channels_subscriber, only: [:show, :destroy], as: :subscriber
-    end
-  end
-
-  unless Rails.env.test?
-    constraints NonValidSubdomainConstraint do
-      get '/', to: redirect('https://neighbor.ly')
     end
   end
 
