@@ -2,6 +2,26 @@ require 'sidekiq/web'
 
 Neighborly::Application.routes.draw do
 
+  inexistent_pages = %i(projects/free
+    projects/7-kc-streetcar-starter-line/video_embed
+    projects/7-kc-streetcar-starter-line/embed
+    projects/12-academie-lafayette-cherry-street-playground/video_embed
+    projects/12-cherry-street-playground/embed
+    projects/16-better-block-kc-making-grand-grand/embed
+    projects/20-powell-street-skate-spot/video_embed
+    projects/29-rockledge-dog-park/embed
+    projects/29-rockledge-dog-park/video_embed
+    projects/44-wish-upon-a-fountain/embed
+    projects/50-better-block-kc-2013/embed
+    projects/57/video_embed
+    projects/6-sustain-kansas-city-b-cycle/video_embed
+    projects/rivermarket-dogpark/video_embed
+  )
+
+  inexistent_pages.each do |url|
+    get "/#{url}", to: redirect("/")
+  end
+
   unless Rails.env.test?
     constraints NonValidSubdomainConstraint do
       get '/', to: redirect('https://neighbor.ly')
@@ -180,12 +200,17 @@ Neighborly::Application.routes.draw do
     resources :previewer, only: :create
   end
 
-  # Redirect from old users url to the new
-  get "/users/:id", to: redirect('neighbors/%{id}')
-
-  # Temporary Routes
-  get '/projects/57/video_embed', to: redirect('projects/ideagarden/video_embed')
-
   get "/set_email" => "users#set_email", as: :set_email_users
+
+  ### Redirects ###
+
+  get "/users/:id", to: redirect('neighbors/%{id}')
+  get '/projects/57/video_embed', to: redirect('projects/ideagarden/video_embed')
+  get '/projects/:id/undefined', to: redirect('/projects/%{id}')
+  get '/projects/:id/backers', to: redirect('/projects/%{id}')
+  get '/projects/:id/reward_contact', to: redirect('/projects/%{id}')
+
+  get '/2014/switching-to-balanced-and-cutting-our-fee', to: redirect('http://blog.neighbor.ly/news/switching-to-balanced-and-cutting-our-fee')
+
   get "/:id", to: redirect('projects/%{id}')
 end
