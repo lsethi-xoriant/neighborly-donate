@@ -16,15 +16,6 @@ header.contain-to-grid.fixed
             span
 
       .top-bar-section
-        ul.left.main-menu
-          li
-            = link_to main_app.learn_path do
-              i.icon-et-info-circled
-              = t('.about')
-          li
-            = link_to main_app.discover_path do
-              i.icon-et-map
-              = t('.discover')
 
         ul.right
           - if user_signed_in?
@@ -68,13 +59,4 @@ header.contain-to-grid.fixed
             li.user-action.radius-right.sign-out = link_to t('.sign-out'), main_app.destroy_user_session_url(base_domain)
 
           - else
-            li.user-action.radius-left.with-divider = link_to t('.sign-up'), main_app.new_user_registration_url(base_domain), class: 'sign-up'
-            li.user-action.radius-right = link_to t('.sign-in'), main_app.new_user_session_url(base_domain), class: 'sign-in'
-
-          li.search-box
-            = form_tag main_app.discover_path, method: 'GET', class: 'discover-form' do
-              = text_field_tag :search, nil, autocomplete: "off", value: params[:search], class: "discover-form-input #{'show' if params[:search].present?}", placeholder: 'Search...'
-              = submit_tag
-              = link_to '#search', class: 'search-button' do
-                i.icon-et-search
-                | &nbsp;
+            li.user-action = link_to t('.sign-in'), main_app.new_user_session_url(base_domain), class: 'sign-in'
