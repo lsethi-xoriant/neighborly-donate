@@ -15,7 +15,7 @@
 
     .large-4.medium-4.columns
       .subtitle
-        h5= t(".subtitle.#{@project.campaign_type}", category_name: link_to(@project.category, discover_path(category: @project.category.to_s.downcase)), city: @project.display_address_formated, author: link_to(@project.user.display_name, user_path(@project.user))).html_safe
+        h5= t(".subtitle.#{@project.campaign_type}", category_name: @project.category, city: @project.display_address_formated, author: @project.user.display_name).html_safe
       hr
       .headline
         p = @project.headline
