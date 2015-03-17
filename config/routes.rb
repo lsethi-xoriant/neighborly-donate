@@ -19,7 +19,7 @@ Neighborly::Application.routes.draw do
   )
 
   inexistent_pages.each do |url|
-    get "/#{url}", to: redirect("/")
+    get "/#{url}", to: redirect("https://neighborly.com/thanks")
   end
 
   unless Rails.env.test?
@@ -102,11 +102,11 @@ Neighborly::Application.routes.draw do
 
   # Static Pages
   get '/sitemap',               to: 'static#sitemap',             as: :sitemap
-  get '/how-it-works', 
-      "/faq", 
-      "/terms", 
-      "/privacy", 
-      "/start", 
+  get '/how-it-works',
+      "/faq",
+      "/terms",
+      "/privacy",
+      "/start",
       '/learn',
     to: redirect('https://neighborly.com/thanks')
 
