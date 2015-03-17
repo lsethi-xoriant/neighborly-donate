@@ -24,12 +24,10 @@ Neighborly::Application.routes.draw do
 
   unless Rails.env.test?
     constraints NonValidSubdomainConstraint do
-      get '/', to: redirect('https://neighbor.ly')
-      get '/*wildcard', to: redirect('https://neighbor.ly/%{wildcard}')
+      get '/', to: redirect('https://neighborly.com')
+      get '/*wildcard', to: redirect('https://neighborly.com/%{wildcard}')
     end
   end
-
-  get '/about', to: redirect('/learn')
 
   devise_for :users, path: '',
     path_names:  {
@@ -46,8 +44,6 @@ Neighborly::Application.routes.draw do
   devise_scope :user do
     post '/sign_up', to: 'devise/registrations#create', as: :sign_up
   end
-
-  get '/thank_you' => "static#thank_you"
 
   check_user_admin = lambda { |request| request.env["warden"].authenticate? and request.env['warden'].user.admin }
 
@@ -102,23 +98,24 @@ Neighborly::Application.routes.draw do
   mount Neighborly::Admin::Engine => '/admin/', as: :neighborly_admin
 
   # Root path should be after channel constraints
-  root to: 'projects#index'
+  root to: redirect('https://neighborly.com/thanks')
 
   # Static Pages
   get '/sitemap',               to: 'static#sitemap',             as: :sitemap
-  get '/how-it-works',          to: 'static#how_it_works',        as: :how_it_works
-  get "/faq",                   to: "static#faq",                 as: :faq
-  get "/terms",                 to: "static#terms",               as: :terms
-  get "/privacy",               to: "static#privacy",             as: :privacy
-  get "/start",                 to: "projects#start",             as: :start
-  get '/learn',                 to: 'static#learn',               as: :learn
+  get '/how-it-works', 
+      "/faq", 
+      "/terms", 
+      "/privacy", 
+      "/start", 
+      '/learn',
+    to: redirect('https://neighborly.com/thanks')
 
   # Only accessible on development
   if Rails.env.development?
     get "/base",                to: "static#base",              as: :base
   end
 
-  get "/discover/(:state)(/near/:near)(/category/:category)(/tags/:tags)(/search/:search)", to: "discover#index", as: :discover
+  get "/discover/(:state)(/near/:near)(/category/:category)(/tags/:tags)(/search/:search)", to: redirect('https://neighborly.com/thanks')
 
   resources :tags, only: [:index]
 
