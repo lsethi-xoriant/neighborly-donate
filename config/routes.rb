@@ -24,8 +24,8 @@ Neighborly::Application.routes.draw do
 
   unless Rails.env.test?
     constraints NonValidSubdomainConstraint do
-      # get '/', to: redirect('https://neighborly.com')
-      # get '/*wildcard', to: redirect('https://neighborly.com/%{wildcard}')
+      get '/', to: redirect('https://neighborly.com')
+      get '/*wildcard', to: redirect('https://neighborly.com/%{wildcard}')
     end
   end
 
