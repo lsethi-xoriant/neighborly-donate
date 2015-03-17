@@ -3,7 +3,8 @@
 = render 'projects/meta_tags'
 
 .project-page
-  = render 'projects/archive'
+  - unless @project.online?
+    = render 'projects/archive'
   = render 'projects/header'
   = render 'projects/status_bar'
 
